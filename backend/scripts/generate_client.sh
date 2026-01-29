@@ -5,7 +5,7 @@
 # NEVER overwrites existing keys
 ###############################################################################
 
-set -eo pipefail  # Remove -u flag to allow unset variables in vars file
+set -eo pipefail
 
 # Usage
 if [ $# -ne 2 ]; then
@@ -36,19 +36,11 @@ fi
 # Navigate to Easy-RSA directory
 cd "$EASYRSA_DIR"
 
-# Source vars file if it exists (for Easy-RSA configuration)
-# Use set +u temporarily to allow unset variables in vars file
-if [ -f "./vars" ]; then
-    set +u
-    source ./vars
-    set -u
-fi
-
-# Set PKI directory explicitly
-export EASYRSA_PKI="$EASYRSA_DIR/pki"
+# DON'T source vars file - Easy-RSA 3.1.x reads it automatically and errors if you source it
+# The vars file should exist at /etc/openvpn/easy-rsa/vars (created by setup_easyrsa.sh)
 
 # Generate client certificate without password
-# Use --batch to avoid interactive prompts
+# Easy-RSA will automatically read the vars file
 ./easyrsa --batch build-client-full "$CERT_NAME" nopass 2>&1
 
 EXIT_CODE=$?
