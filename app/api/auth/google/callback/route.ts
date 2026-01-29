@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
       window.opener.postMessage({
         type: 'GOOGLE_AUTH_ERROR',
         error: '${error}'
-      }, '${new URL(request.url).origin}');
+      }, '*');
       setTimeout(() => window.close(), 2000);
     }
   </script>
@@ -75,7 +75,7 @@ export async function GET(request: NextRequest) {
       window.opener.postMessage({
         type: 'GOOGLE_AUTH_ERROR',
         error: 'No authorization code received'
-      }, '${new URL(request.url).origin}');
+      }, '*');
       setTimeout(() => window.close(), 2000);
     }
   </script>
@@ -140,7 +140,7 @@ export async function GET(request: NextRequest) {
       window.opener.postMessage({
         type: 'GOOGLE_AUTH_ERROR',
         error: 'Must use @students.wits.ac.za email address'
-      }, '${new URL(request.url).origin}');
+      }, '*');
       setTimeout(() => window.close(), 3000);
     }
   </script>
@@ -202,12 +202,12 @@ export async function GET(request: NextRequest) {
   </div>
   <script>
     try {
-      // Send user data to parent window
+      // Send user data to parent window (use wildcard for cross-origin)
       if (window.opener) {
         window.opener.postMessage({
           type: 'GOOGLE_AUTH_SUCCESS',
           user: ${JSON.stringify(userData)}
-        }, '${new URL(request.url).origin}');
+        }, '*');
         
         // Close popup after a short delay
         setTimeout(() => {
@@ -253,7 +253,7 @@ export async function GET(request: NextRequest) {
       window.opener.postMessage({
         type: 'GOOGLE_AUTH_ERROR',
         error: 'Authentication failed. Please try again.'
-      }, '${new URL(request.url).origin}');
+      }, '*');
       setTimeout(() => window.close(), 3000);
     }
   </script>

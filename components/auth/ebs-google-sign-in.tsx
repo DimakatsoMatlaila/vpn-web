@@ -90,10 +90,8 @@ export function EBSGoogleSignIn({ onSuccess }: EBSGoogleSignInProps) {
     
     // Listen for message from popup
     const handleMessage = (event: MessageEvent) => {
-      // Verify origin - accept both window origin and configured app URL
-      const allowedOrigins = [window.location.origin, appUrl]
-      if (!allowedOrigins.includes(event.origin)) {
-        console.warn('[Google OAuth] Message from unexpected origin:', event.origin)
+      // Only process our specific message types to avoid processing unrelated messages
+      if (!event.data || !event.data.type) {
         return
       }
       
