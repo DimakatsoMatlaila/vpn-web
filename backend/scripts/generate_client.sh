@@ -5,7 +5,7 @@
 # NEVER overwrites existing keys
 ###############################################################################
 
-set -euo pipefail
+set -eo pipefail  # Remove -u flag to allow unset variables in vars file
 
 # Usage
 if [ $# -ne 2 ]; then
@@ -37,8 +37,11 @@ fi
 cd "$EASYRSA_DIR"
 
 # Source vars file if it exists (for Easy-RSA configuration)
+# Use set +u temporarily to allow unset variables in vars file
 if [ -f "./vars" ]; then
+    set +u
     source ./vars
+    set -u
 fi
 
 # Set PKI directory explicitly
