@@ -68,13 +68,17 @@ fi
 
 # Step 5: Configure sudo access for backend user
 echo "[5/5] Configuring sudo access for backend..."
-SUDOERS_FILE="/etc/sudoers.d/vpn-backend-easyrsa"
+SUDOERS_FILE="/etc/sudoers.d/vpn-backend"
+BACKEND_DIR="${2:-/home/ubuntu/vpn-web/backend}"  # Default backend path
 
 if [ ! -f "$SUDOERS_FILE" ]; then
     cat > "$SUDOERS_FILE" << EOF
-# Allow VPN backend to run Easy-RSA commands
+# Allow VPN backend to run Easy-RSA and VPN provisioning scripts
 $BACKEND_USER ALL=(ALL) NOPASSWD: $EASYRSA_DIR/easyrsa
 $BACKEND_USER ALL=(ALL) NOPASSWD: /bin/bash $EASYRSA_DIR/easyrsa
+$BACKEND_USER ALL=(ALL) NOPASSWD: /bin/bash $BACKEND_DIR/scripts/generate_client.sh
+$BACKEND_USER ALL=(ALL) NOPASSWD: /bin/bash $BACKEND_DIR/scripts/assign_ip.sh
+$BACKEND_USER ALL=(ALL) NOPASSWD: /bin/bash $BACKEND_DIR/scripts/build_ovpn.sh
 EOF
     chmod 0440 "$SUDOERS_FILE"
     echo "✓ Created sudoers file for backend user: $BACKEND_USER"

@@ -155,15 +155,16 @@ async function assignStaticIp(certName, vpnIp) {
   logger.info(`Assigning IP ${vpnIp} to ${certName}`);
 
   try {
+    // Use sudo for CCD file creation if not running as root
+    const usesSudo = process.getuid && process.getuid() !== 0;
+    const command = usesSudo ? 'sudo' : 'bash';
+    const args = usesSudo
+      ? ['bash', config.scripts.assignIp, config.openvpn.ccd, certName, vpnIp, config.vpn.netmask]
+      : [config.scripts.assignIp, config.openvpn.ccd, certName, vpnIp, config.vpn.netmask];
+
     const { stdout, stderr } = await execFileAsync(
-      'bash',
-      [
-        config.scripts.assignIp,
-        config.openvpn.ccd,
-        certName,
-        vpnIp,
-        config.vpn.netmask
-      ],
+      command,
+      args,
       { timeout: 10000 }
     );
 
@@ -172,7 +173,12 @@ async function assignStaticIp(certName, vpnIp) {
 
     return path.join(config.openvpn.ccd, certName);
   } catch (error) {
-    logger.error(`Failed to assign IP for ${certName}:`, error);
+    logger.error(`Failed to assign IP for ${certName}:`, {
+      cmd: error.cmd,
+      code: error.code,
+      stderr: error.stderr,
+      stdout: error.stdout,
+    });
     throw new Error(`IP assignment failed: ${error.message}`);
   }
 }
@@ -186,17 +192,16 @@ async function buildOvpnFile(certName) {
   logger.info(`Building .ovpn file for ${certName}`);
 
   try {
+    // Use sudo for .ovpn file creation if not running as root
+    const usesSudo = process.getuid && process.getuid() !== 0;
+    const command = usesSudo ? 'sudo' : 'bash';
+    const args = usesSudo
+      ? ['bash', config.scripts.buildOvpn, config.openvpn.easyrsa, certName, outputFile, config.vpn.serverHost, config.vpn.serverPort, config.vpn.protocol]
+      : [config.scripts.buildOvpn, config.openvpn.easyrsa, certName, outputFile, config.vpn.serverHost, config.vpn.serverPort, config.vpn.protocol];
+
     const { stdout, stderr } = await execFileAsync(
-      'bash',
-      [
-        config.scripts.buildOvpn,
-        config.openvpn.easyrsa,
-        certName,
-        outputFile,
-        config.vpn.serverHost,
-        config.vpn.serverPort,
-        config.vpn.protocol
-      ],
+      command,
+      args,
       { timeout: 10000 }
     );
 
@@ -205,7 +210,12 @@ async function buildOvpnFile(certName) {
 
     return outputFile;
   } catch (error) {
-    logger.error(`Failed to build .ovpn file for ${certName}:`, error);
+    logger.error(`Failed to build .ovpn file for ${certName}:`, {
+      cmd: error.cmd,
+      code: error.code,
+      stderr: error.stderr,
+      stdout: error.stdout,
+    });
     throw new Error(`.ovpn file generation failed: ${error.message}`);
   }
 }
