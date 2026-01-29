@@ -87,7 +87,7 @@ EOF
 
 if [ $? -eq 0 ]; then
     echo "Successfully created .ovpn file: $OUTPUT_FILE"
-    chmod 600 "$OUTPUT_FILE"
+    chmod 644 "$OUTPUT_FILE"  # Make readable by all users (backend can read)
     exit 0
 else
     echo "ERROR: Failed to create .ovpn file for: $CERT_NAME" >&2
