@@ -1,0 +1,267 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Oracle E-Business Suite inspired theme - classic enterprise look */
+:root {
+  /* Classic Oracle EBS color palette - blue/gray enterprise style */
+  --background: #d4d0c8;
+  --foreground: #000000;
+  --card: #ece9d8;
+  --card-foreground: #000000;
+  --popover: #ffffff;
+  --popover-foreground: #000000;
+  --primary: #003399;
+  --primary-foreground: #ffffff;
+  --secondary: #c0c0c0;
+  --secondary-foreground: #000000;
+  --muted: #808080;
+  --muted-foreground: #404040;
+  --accent: #316ac5;
+  --accent-foreground: #ffffff;
+  --destructive: #cc0000;
+  --destructive-foreground: #ffffff;
+  --border: #808080;
+  --input: #ffffff;
+  --ring: #003399;
+  --chart-1: #003399;
+  --chart-2: #006699;
+  --chart-3: #009999;
+  --chart-4: #339966;
+  --chart-5: #666699;
+  --radius: 0px;
+  --sidebar: #ece9d8;
+  --sidebar-foreground: #000000;
+  --sidebar-primary: #003399;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #316ac5;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #808080;
+  --sidebar-ring: #003399;
+
+  /* Oracle EBS specific colors */
+  --oracle-header-start: #003366;
+  --oracle-header-end: #336699;
+  --oracle-menu-bg: #d4d0c8;
+  --oracle-inset-dark: #404040;
+  --oracle-inset-light: #ffffff;
+  --oracle-highlight: #ffc000;
+}
+
+.dark {
+  --background: #d4d0c8;
+  --foreground: #000000;
+  --card: #ece9d8;
+  --card-foreground: #000000;
+  --popover: #ffffff;
+  --popover-foreground: #000000;
+  --primary: #003399;
+  --primary-foreground: #ffffff;
+  --secondary: #c0c0c0;
+  --secondary-foreground: #000000;
+  --muted: #808080;
+  --muted-foreground: #404040;
+  --accent: #316ac5;
+  --accent-foreground: #ffffff;
+  --destructive: #cc0000;
+  --destructive-foreground: #ffffff;
+  --border: #808080;
+  --input: #ffffff;
+  --ring: #003399;
+}
+
+@theme inline {
+  --font-sans: "Tahoma", "Segoe UI", "Arial", system-ui, sans-serif;
+  --font-mono: "Lucida Console", "Courier New", monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-size: 11px;
+  }
+}
+
+/* Classic Windows/Oracle EBS button style */
+.ebs-button {
+  background: linear-gradient(180deg, #ffffff 0%, #ece9d8 50%, #d4d0c8 100%);
+  border: 1px solid;
+  border-color: #ffffff #404040 #404040 #ffffff;
+  box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #808080;
+  padding: 2px 12px;
+  font-size: 11px;
+  cursor: pointer;
+}
+.ebs-button:hover {
+  background: linear-gradient(180deg, #ffffff 0%, #f0ede4 50%, #e0ddd4 100%);
+}
+.ebs-button:active {
+  border-color: #404040 #ffffff #ffffff #404040;
+  box-shadow: inset -1px -1px 0 #ffffff, inset 1px 1px 0 #808080;
+}
+
+/* Inset panel style */
+.ebs-inset {
+  border: 2px solid;
+  border-color: #808080 #ffffff #ffffff #808080;
+  background: #ffffff;
+}
+
+/* Outset panel style */
+.ebs-outset {
+  border: 2px solid;
+  border-color: #ffffff #808080 #808080 #ffffff;
+  background: #ece9d8;
+}
+
+/* Header bar gradient */
+.ebs-header {
+  background: linear-gradient(180deg, #336699 0%, #003366 100%);
+  color: white;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-bottom: 1px solid #001a33;
+}
+
+/* Menu bar style */
+.ebs-menubar {
+  background: linear-gradient(180deg, #ece9d8 0%, #d4d0c8 100%);
+  border-bottom: 1px solid #808080;
+  padding: 2px 4px;
+}
+
+/* Field group style */
+.ebs-fieldset {
+  border: 1px solid #808080;
+  background: #ece9d8;
+  padding: 8px;
+}
+
+/* Table header style */
+.ebs-table-header {
+  background: linear-gradient(180deg, #d4d0c8 0%, #c0c0c0 100%);
+  border: 1px solid;
+  border-color: #ffffff #808080 #808080 #ffffff;
+  font-weight: bold;
+  padding: 4px 8px;
+}
+
+/* Status bar */
+.ebs-statusbar {
+  background: #ece9d8;
+  border-top: 1px solid #ffffff;
+  border-bottom: 1px solid #808080;
+  padding: 2px 8px;
+  font-size: 10px;
+}
+
+/* Input field */
+.ebs-input {
+  border: 2px solid;
+  border-color: #808080 #ffffff #ffffff #808080;
+  background: #ffffff;
+  padding: 2px 4px;
+  font-size: 11px;
+}
+.ebs-input:focus {
+  outline: 1px dotted #003399;
+}
+
+/* Tab style */
+.ebs-tab {
+  background: linear-gradient(180deg, #ece9d8 0%, #d4d0c8 100%);
+  border: 1px solid;
+  border-color: #ffffff #808080 #808080 #ffffff;
+  border-bottom: none;
+  padding: 4px 16px;
+  margin-right: 2px;
+  cursor: pointer;
+}
+.ebs-tab.active {
+  background: #ece9d8;
+  border-bottom: 1px solid #ece9d8;
+  margin-bottom: -1px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Tree view */
+.ebs-tree-item {
+  padding: 2px 4px;
+  cursor: pointer;
+}
+.ebs-tree-item:hover {
+  background: #316ac5;
+  color: white;
+}
+
+/* Window title bar */
+.ebs-titlebar {
+  background: linear-gradient(180deg, #0a246a 0%, #a6caf0 100%);
+  color: white;
+  font-weight: bold;
+  padding: 4px 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Scrollbar styling for that classic look */
+::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+::-webkit-scrollbar-track {
+  background: #ece9d8;
+  border: 1px solid #808080;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #ece9d8 0%, #d4d0c8 100%);
+  border: 1px solid;
+  border-color: #ffffff #808080 #808080 #ffffff;
+}
+::-webkit-scrollbar-button {
+  background: linear-gradient(180deg, #ece9d8 0%, #d4d0c8 100%);
+  border: 1px solid;
+  border-color: #ffffff #808080 #808080 #ffffff;
+}

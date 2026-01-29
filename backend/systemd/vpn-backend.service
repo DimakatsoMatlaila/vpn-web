@@ -1,0 +1,28 @@
+[Unit]
+Description=WitsCyber VPN Backend API
+Documentation=https://github.com/witscyber/vpn-backend
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/witscyber-vpn/backend
+Environment="NODE_ENV=production"
+EnvironmentFile=/opt/witscyber-vpn/backend/.env
+ExecStart=/usr/bin/node server.js
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=vpn-backend
+
+# Security
+NoNewPrivileges=true
+PrivateTmp=true
+
+# Restart policy
+StartLimitInterval=60
+StartLimitBurst=3
+
+[Install]
+WantedBy=multi-user.target
