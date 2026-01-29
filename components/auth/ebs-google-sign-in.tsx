@@ -40,6 +40,7 @@ export function EBSGoogleSignIn({ onSuccess }: EBSGoogleSignInProps) {
     
     // Check if Google OAuth is configured
     const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL
     
     if (!googleClientId || googleClientId === 'your-google-client-id.apps.googleusercontent.com') {
       setError(
@@ -50,8 +51,16 @@ export function EBSGoogleSignIn({ onSuccess }: EBSGoogleSignInProps) {
       return
     }
 
-    // Build Google OAuth URL
-    const redirectUri = `${window.location.origin}/api/auth/google/callback`
+    if (!appUrl) {
+      setError(
+        "Application URL not configured. Please set NEXT_PUBLIC_APP_URL in .env.local (e.g., http://localhost:3000)"
+      )
+      setIsLoading(false)
+      return
+    }
+
+    // Build Google OAuth URL using configured app URL
+    const redirectUri = `${appUrl}/api/auth/google/callback`
     const googleAuthUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth')
     googleAuthUrl.searchParams.set('client_id', googleClientId)
     googleAuthUrl.searchParams.set('redirect_uri', redirectUri)
@@ -81,8 +90,10 @@ export function EBSGoogleSignIn({ onSuccess }: EBSGoogleSignInProps) {
     
     // Listen for message from popup
     const handleMessage = (event: MessageEvent) => {
-      // Verify origin
-      if (event.origin !== window.location.origin) {
+      // Verify origin - accept both window origin and configured app URL
+      const allowedOrigins = [window.location.origin, appUrl]
+      if (!allowedOrigins.includes(event.origin)) {
+        console.warn('[Google OAuth] Message from unexpected origin:', event.origin)
         return
       }
       
