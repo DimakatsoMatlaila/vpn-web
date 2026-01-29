@@ -117,9 +117,18 @@ async function generateClientCert(certName) {
   logger.info(`Generating client certificate: ${certName}`);
 
   try {
+    // Use sudo for Easy-RSA if not running as root
+    const usesSudo = process.getuid && process.getuid() !== 0;
+    const command = usesSudo ? 'sudo' : 'bash';
+    const args = usesSudo 
+      ? ['bash', config.scripts.generateClient, config.openvpn.easyrsa, certName]
+      : [config.scripts.generateClient, config.openvpn.easyrsa, certName];
+
+    logger.info(`Running command: ${command} ${args.join(' ')}`);
+
     const { stdout, stderr } = await execFileAsync(
-      'bash',
-      [config.scripts.generateClient, config.openvpn.easyrsa, certName],
+      command,
+      args,
       { timeout: 30000 }
     );
 
@@ -128,7 +137,13 @@ async function generateClientCert(certName) {
 
     return true;
   } catch (error) {
-    logger.error(`Failed to generate certificate for ${certName}:`, error);
+    logger.error(`Failed to generate certificate for ${certName}:`, {
+      cmd: error.cmd,
+      code: error.code,
+      signal: error.signal,
+      stdout: error.stdout,
+      stderr: error.stderr,
+    });
     throw new Error(`Certificate generation failed: ${error.message}`);
   }
 }

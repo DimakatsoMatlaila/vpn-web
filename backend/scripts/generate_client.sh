@@ -27,22 +27,33 @@ if [ -z "$CERT_NAME" ]; then
     exit 1
 fi
 
-# Navigate to Easy-RSA directory
-cd "$EASYRSA_DIR"
-
 # Check if certificate already exists
-if [ -f "pki/issued/${CERT_NAME}.crt" ] && [ -f "pki/private/${CERT_NAME}.key" ]; then
+if [ -f "$EASYRSA_DIR/pki/issued/${CERT_NAME}.crt" ] && [ -f "$EASYRSA_DIR/pki/private/${CERT_NAME}.key" ]; then
     echo "Certificate already exists for: $CERT_NAME" >&2
     exit 0
 fi
 
-# Generate client certificate without password
-./easyrsa --batch build-client-full "$CERT_NAME" nopass
+# Navigate to Easy-RSA directory
+cd "$EASYRSA_DIR"
 
-if [ $? -eq 0 ]; then
+# Source vars file if it exists (for Easy-RSA configuration)
+if [ -f "./vars" ]; then
+    source ./vars
+fi
+
+# Set PKI directory explicitly
+export EASYRSA_PKI="$EASYRSA_DIR/pki"
+
+# Generate client certificate without password
+# Use --batch to avoid interactive prompts
+./easyrsa --batch build-client-full "$CERT_NAME" nopass 2>&1
+
+EXIT_CODE=$?
+
+if [ $EXIT_CODE -eq 0 ]; then
     echo "Successfully generated certificate: $CERT_NAME"
     exit 0
 else
-    echo "ERROR: Failed to generate certificate for: $CERT_NAME" >&2
+    echo "ERROR: Failed to generate certificate for: $CERT_NAME (exit code: $EXIT_CODE)" >&2
     exit 1
 fi
