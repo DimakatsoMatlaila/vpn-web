@@ -43,12 +43,18 @@ export async function requestVpnProfile(email: string): Promise<VpnProfileRespon
     const fileNameMatch = contentDisposition?.match(/filename="?(.+?)"?$/i)
     const fileName = fileNameMatch ? fileNameMatch[1] : `${email.split('@')[0]}.ovpn`
 
-    console.log(`[VPN] Successfully retrieved profile: ${fileName}`)
+    // Extract assigned IP from the ovpn file content
+    // Look for ifconfig line which contains the client IP
+    const ifconfigMatch = ovpnContent.match(/ifconfig\s+(\d+\.\d+\.\d+\.\d+)/i)
+    const assignedIp = ifconfigMatch ? ifconfigMatch[1] : undefined
+
+    console.log(`[VPN] Successfully retrieved profile: ${fileName}${assignedIp ? ` (IP: ${assignedIp})` : ''}`)
 
     return {
       success: true,
       ovpnFile: ovpnBase64,
       fileName,
+      assignedIp,
     }
   } catch (error) {
     console.error('[VPN] Failed to request profile from backend:', error)

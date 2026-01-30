@@ -37,7 +37,7 @@ export default function Home() {
         
         {/* Footer */}
         <div className="mt-4 text-center text-white text-sm opacity-90">
-          <p>© {new Date().getFullYear()} University of the Witwatersrand. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Wits Cybersecurity Interest Group. All rights reserved.</p>
         </div>
       </div>
     </div>
