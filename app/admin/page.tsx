@@ -97,7 +97,6 @@ export default function AdminDashboard() {
       if (response.ok) {
         const data = await response.json()
         setVpnIpMap(data.vpnIpMap || {})
-        console.log('[Admin] Loaded VPN IPs from backend:', data.total)
       }
     } catch (err) {
       console.error('[Admin] Failed to load VPN IPs:', err)
