@@ -378,8 +378,6 @@ export default function AdminDashboard() {
                               height={32}
                               className="rounded-full"
                             />
-                        {vpnIpMap[user.email] || user.vpnAssignedIp || '-'}
-                      
                           )}
                           <span className="font-medium text-gray-900">{user.name}</span>
                         </div>
