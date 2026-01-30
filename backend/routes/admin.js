@@ -3,6 +3,8 @@ const { query, validationResult } = require('express-validator');
 const logger = require('../logger');
 const { loadUsers, getUserRole } = require('../utils');
 const config = require('../config');
+const fs = require('fs').promises;
+const path = require('path');
 
 const router = express.Router();
 
@@ -213,5 +215,46 @@ router.get(
     }
   }
 );
+
+/**
+ * @swagger
+ * /api/admin/vpn-users:
+ *   get:
+ *     summary: Get all VPN users with their assigned IPs
+ *     description: Returns the vpn-users.json data for admin sync purposes (no auth required for internal use)
+ *     tags: [Admin]
+ *     responses:
+ *       200:
+ *         description: List of VPN users with IPs
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   email:
+ *                     type: string
+ *                   vpn_ip:
+ *                     type: string
+ *                   cert_name:
+ *                     type: string
+ *       500:
+ *         description: Server error
+ */
+router.get('/vpn-users', async (req, res) => {
+  try {
+    const vpnUsersPath = path.join(__dirname, '../vpn-users.json');
+    const data = await fs.readFile(vpnUsersPath, 'utf-8');
+    const vpnUsers = JSON.parse(data);
+    
+    logger.info(`Admin: Retrieved ${vpnUsers.length} VPN users for sync`);
+    
+    res.json(vpnUsers);
+  } catch (error) {
+    logger.error('Failed to read vpn-users.json:', error);
+    res.status(500).json({ error: 'Failed to retrieve VPN users' });
+  }
+});
 
 module.exports = router;
