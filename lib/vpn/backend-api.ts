@@ -43,10 +43,14 @@ export async function requestVpnProfile(email: string): Promise<VpnProfileRespon
     const fileNameMatch = contentDisposition?.match(/filename="?(.+?)"?$/i)
     const fileName = fileNameMatch ? fileNameMatch[1] : `${email.split('@')[0]}.ovpn`
 
-    // Extract assigned IP from the ovpn file content
-    // Look for ifconfig line which contains the client IP
-    const ifconfigMatch = ovpnContent.match(/ifconfig\s+(\d+\.\d+\.\d+\.\d+)/i)
-    const assignedIp = ifconfigMatch ? ifconfigMatch[1] : undefined
+    // Extract assigned IP from custom header (primary method)
+    let assignedIp = response.headers.get('x-vpn-ip') || undefined
+
+    // Fallback: Extract assigned IP from the ovpn file content if header not present
+    if (!assignedIp) {
+      const ifconfigMatch = ovpnContent.match(/ifconfig\s+(\d+\.\d+\.\d+\.\d+)/i)
+      assignedIp = ifconfigMatch ? ifconfigMatch[1] : undefined
+    }
 
     console.log(`[VPN] Successfully retrieved profile: ${fileName}${assignedIp ? ` (IP: ${assignedIp})` : ''}`)
 

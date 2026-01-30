@@ -82,8 +82,9 @@ router.post(
       
       res.setHeader('Content-Type', 'application/x-openvpn-profile');
       res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`);
+      res.setHeader('X-VPN-IP', user.vpn_ip); // Add VPN IP to response header
       
-      logger.info(`Sending .ovpn file to ${email}: ${user.ovpn_file}`);
+      logger.info(`Sending .ovpn file to ${email}: ${user.ovpn_file} (IP: ${user.vpn_ip})`);
       
       const fileStream = require('fs').createReadStream(user.ovpn_file);
       fileStream.pipe(res);
