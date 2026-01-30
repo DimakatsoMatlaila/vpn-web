@@ -190,6 +190,11 @@ export async function getUserByUsername(username: string): Promise<User | null> 
   return db.users.find((u) => u.username === username) || null
 }
 
+export async function getAllUsers(): Promise<User[]> {
+  const db = await readDatabase()
+  return db.users
+}
+
 export async function updateUserProfile(
   email: string,
   data: Partial<Omit<User, 'id' | 'email' | 'googleId' | 'createdAt'>>

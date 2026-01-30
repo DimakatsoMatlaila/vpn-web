@@ -1,0 +1,40 @@
+================================================================================
+LOGO SETUP INSTRUCTIONS
+Wits Cyber Security Registration Portal
+================================================================================
+
+REQUIRED LOGOS:
+---------------
+
+1. wits-logo.png
+   - Official University of the Witwatersrand logo
+   - Recommended: 120x120 pixels (transparent background)
+   - Where to get: Wits branding resources or marketing department
+   
+2. openvpn-logo.png
+   - OpenVPN official logo
+   - Recommended: 90x90 pixels (transparent background)
+   - Where to get: https://openvpn.net/press-kit/ or similar
+
+INSTALLATION:
+-------------
+1. Download or obtain the logos
+2. Rename them exactly as:
+   - wits-logo.png
+   - openvpn-logo.png
+3. Place them in this folder: public/logos/
+
+CURRENT STATUS:
+---------------
+The application is configured to display these logos but will gracefully
+handle missing images. When you add the logo files, they will appear
+automatically in the header without any code changes needed.
+
+DESIGN NOTES:
+-------------
+- The page uses Wits colors: Navy Blue (#003366) and Gold (#FFD700)
+- White background with gradient blue header
+- Logos are positioned in the top header section
+- Modern, clean card-based design throughout
+
+================================================================================

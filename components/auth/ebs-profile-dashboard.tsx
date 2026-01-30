@@ -96,6 +96,23 @@ export function EBSProfileDashboard({ onLogout }: EBSProfileDashboardProps) {
         </div>
       </div>
 
+      {/* Admin Access */}
+      {profile.email === "2555500@students.wits.ac.za" && (
+        <div className="bg-[#FFD700] border-2 border-[#FF8C00] p-3 flex items-center gap-3">
+          <span className="text-2xl">👑</span>
+          <div className="flex-1">
+            <div className="font-bold text-[12px]">Administrator Access</div>
+            <div className="text-[10px]">You have admin privileges</div>
+          </div>
+          <a 
+            href="/admin"
+            className="ebs-button text-[10px] px-3 py-1"
+          >
+            Admin Dashboard
+          </a>
+        </div>
+      )}
+
       {/* Account Details */}
       <div className="ebs-fieldset">
         <div className="text-[10px] font-bold text-[#003399] mb-2">Your Profile</div>
